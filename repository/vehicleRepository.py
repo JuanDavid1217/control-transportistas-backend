@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
-from models import models
-from schemas import schemas
+from models.models import Unidad
+from schemas.schemas import NuevaUnidad
 
-def crear(db: Session, nuevaUnidad: schemas.NuevaUnidad):
+def crear(db: Session, nuevaUnidad: NuevaUnidad):
     try:
-        unidad = models.Unidad(placa=nuevaUnidad.placa, marca=nuevaUnidad.marca, modelo=nuevaUnidad.modelo, anio=nuevaUnidad.anio, usuarioId=nuevaUnidad.UsuarioId)
+        unidad = Unidad(placa=nuevaUnidad.placa, marca=nuevaUnidad.marca, modelo=nuevaUnidad.modelo, anio=nuevaUnidad.anio, usuarioId=nuevaUnidad.UsuarioId)
         db.add(unidad)
         db.commit()
         db.refresh(unidad)
@@ -14,14 +14,14 @@ def crear(db: Session, nuevaUnidad: schemas.NuevaUnidad):
         raise e
 
 def obtener(db: Session, id: int):
-    unidad = db.query(models.Unidad).filter(models.Unidad.id == id).first()
+    unidad = db.query(Unidad).filter(Unidad.id == id).first()
     return unidad
 
 def obtenerTodos(db: Session):
-    unidades = db.query(models.Unidades).all()
+    unidades = db.query(Unidades).all()
     return unidades
 
-def actualizar(db: Session, id:int, nuevaUnidad: schemas.NuevaUnidad):
+def actualizar(db: Session, id:int, nuevaUnidad: NuevaUnidad):
     unidad = obtener(db, id)
     if unidad:
         try:

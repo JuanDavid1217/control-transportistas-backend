@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
-from models import models
-from schemas import schemas
+from models.models import MetricaPorRuta
+from schemas.schemas import NuevaMetrica
 
-def crear(db: Session, rutaId:int, nuevaMetrica: schemas.NuevaMetrica):
+def crear(db: Session, rutaId:int, nuevaMetrica: NuevaMetrica):
     try:
-        metrica = models.MetricaPorRuta(id=rutaId, distancia=nuevaMetrica.distancia, combustible=nuevaMetrica.combustible)
+        metrica = MetricaPorRuta(id=rutaId, distancia=nuevaMetrica.distancia, combustible=nuevaMetrica.combustible)
         db.add(metrica)
         db.commit()
         db.refresh(metrica)
@@ -14,14 +14,14 @@ def crear(db: Session, rutaId:int, nuevaMetrica: schemas.NuevaMetrica):
         raise e
 
 def obtener(db: Session, id: int):
-    metrica = db.query(models.MetricaPorRuta).filter(models.MetricaPorRuta.id == id).first()
+    metrica = db.query(MetricaPorRuta).filter(MetricaPorRuta.id == id).first()
     return metrica
 
 def obtenerTodos(db: Session):
-    metricas = db.query(models.Metricas).all()
+    metricas = db.query(MetricaPorRuta).all()
     return metricas
 
-def actualizar(db: Session, id:int, nuevaMetrica: schemas.NuevaMetrica):
+def actualizar(db: Session, id:int, nuevaMetrica: NuevaMetrica):
     metrica = obtener(db, id)
     if metrica:
         try:

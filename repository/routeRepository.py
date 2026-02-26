@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session, func
-from models import models
-from schemas import schemas
+from models.models import Ruta
+from schemas.schemas import NuevaRuta
 
-def crear(db: Session, nuevaRuta: schemas.NuevaRuta):
+def crear(db: Session, nuevaRuta: NuevaRuta):
     try:
-        ruta = models.Ruta(unidadId=nuevaRuta.unidadId, inicio=nuevaRuta.inicio, destino=nuevaRuta.destino)
+        ruta = Ruta(unidadId=nuevaRuta.unidadId, inicio=nuevaRuta.inicio, destino=nuevaRuta.destino)
         db.add(ruta)
         db.commit()
         db.refresh(ruta)
@@ -14,14 +14,14 @@ def crear(db: Session, nuevaRuta: schemas.NuevaRuta):
         raise e
 
 def obtener(db: Session, id: int):
-    ruta = db.query(models.Ruta).filter(models.Ruta.id == id).first()
+    ruta = db.query(Ruta).filter(Ruta.id == id).first()
     return ruta
 
 def obtenerTodos(db: Session):
-    rutas= db.query(models.Ruta).all()
+    rutas= db.query(Ruta).all()
     return rutas
 
-def actualizar(db: Session, id:int, nuevaRuta: schemas.NuevaRuta):
+def actualizar(db: Session, id:int, nuevaRuta: NuevaRuta):
     ruta = obtener(db, id)
     if ruta:
         try:

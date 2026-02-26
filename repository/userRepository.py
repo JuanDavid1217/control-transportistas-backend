@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
-from models import models
-from schemas import schemas
+from models.models import Usuario
+from schemas.schemas import NuevoUsuario
 
-def crear(db: Session, nuevoUsuario: schemas.NuevoUsuario):
+def crear(db: Session, nuevoUsuario: NuevoUsuario):
     try:
-        usuario = models.Usuario(nombre=nuevoUsuario.nombre, email=nuevoUsuario.email, telefono=nuevoUsuario.telefono)
+        usuario = Usuario(nombre=nuevoUsuario.nombre, email=nuevoUsuario.email, telefono=nuevoUsuario.telefono)
         db.add(usuario)
         db.commit()
         db.refresh(usuario)
@@ -14,14 +14,14 @@ def crear(db: Session, nuevoUsuario: schemas.NuevoUsuario):
         raise e
 
 def obtener(db: Session, id: int):
-    usuario = db.query(models.Usuario).filter(models.Usuario.id == id).first()
+    usuario = db.query(Usuario).filter(Usuario.id == id).first()
     return usuario
 
 def obtenerTodos(db: Session):
-    usuarios = db.query(models.Usuario).all()
+    usuarios = db.query(Usuario).all()
     return usuarios
 
-def actualizar(db: Session, id:int, nuevoUsuario: schemas.NuevoUsuario):
+def actualizar(db: Session, id:int, nuevoUsuario: NuevoUsuario):
     usuario = obtener(db, id)
     if usuario:
         try:
