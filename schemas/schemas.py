@@ -3,7 +3,7 @@ from datetime import datetime
 from decimal import Decimal
 
 class NuevoUsuario(BaseModel):
-    nombe: str
+    nombre: str
     email: EmailStr
     telefono: str
 

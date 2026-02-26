@@ -21,6 +21,10 @@ def obtenerTodos(db: Session):
     usuarios = db.query(Usuario).all()
     return usuarios
 
+def obtenerPorEmail(db:Session, email:str):
+    usuario = db.query(Usuario).filter(Usuario.email==email).first()
+    return usuario
+
 def actualizar(db: Session, id:int, nuevoUsuario: NuevoUsuario):
     usuario = obtener(db, id)
     if usuario:

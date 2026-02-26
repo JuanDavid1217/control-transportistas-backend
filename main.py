@@ -4,6 +4,7 @@ import uvicorn
 from starlette.responses import RedirectResponse
 from dbconnection import engine
 from models import models
+from APIRouter import apiRouter
 
 models.Base.metadata.create_all(bind = engine)
 
@@ -17,7 +18,7 @@ app.add_middleware(
     allow_headers = ["Authorization", "Content-Type"]
 )
 
-#app.include_router()
+app.include_router(apiRouter)
 
 @app.get("/")
 async def root():
