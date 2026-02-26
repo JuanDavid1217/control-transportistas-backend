@@ -18,7 +18,7 @@ def obtener(db: Session, id: int):
     return unidad
 
 def obtenerTodos(db: Session):
-    unidades = db.query(Unidades).all()
+    unidades = db.query(Unidad).all()
     return unidades
 
 def actualizar(db: Session, id:int, nuevaUnidad: NuevaUnidad):

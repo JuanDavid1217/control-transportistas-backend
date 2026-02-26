@@ -6,5 +6,5 @@ def obtener(db: Session, id: int):
     return estatus
 
 def obtenerTodos(db: Session):
-    estatus = db.query(models.Estatus).all()
+    estatus = db.query(Estatus).all()
     return estatus
