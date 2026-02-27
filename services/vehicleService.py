@@ -2,10 +2,12 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from schemas.schemas import NuevaUnidad
 from repository import vehicleRepository
+from services import userService
 
 def crear(db: Session, nuevaUnidad: NuevaUnidad):
     existe = vehicleRepository.obtenerPorPlaca(db, nuevaUnidad.placa)
     if existe is None:
+        userService.obtener(db, nuevaUnidad.usuarioId)
         vehicle = vehicleRepository.crear(db, nuevaUnidad)
         return vehicle
     raise HTTPException(status_code=409, detail=f"La unidad con placa: {nuevaUnidad.placa} ya esta registrada.")
@@ -23,6 +25,7 @@ def actualizar(db: Session, id:int, nuevaUnidad: NuevaUnidad):
     unidad = obtener(db, id)
     existe = vehicleRepository.obtenerPorPlaca(db, nuevaUnidad.placa)
     if existe is None or existe.id == unidad.id:
+        userService.obtener(db, nuevaUnidad.usuarioId)
         unidad = vehicleRepository.actualizar(db, id, nuevaUnidad)
         return unidad
     raise HTTPException(status_code=409, detail=f"La unidad con placa: {nuevaUnidad.placa} ya esta registrada.")

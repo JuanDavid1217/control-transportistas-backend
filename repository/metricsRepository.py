@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
 from models.models import MetricaPorRuta
-from schemas.schemas import NuevaMetrica
+from schemas.schemas import NuevaMetrica, Metrica
 
-def crear(db: Session, rutaId:int, nuevaMetrica: NuevaMetrica):
+def crear(db: Session, nuevaMetrica: Metrica):
     try:
-        metrica = MetricaPorRuta(id=rutaId, distancia=nuevaMetrica.distancia, combustible=nuevaMetrica.combustible)
+        metrica = MetricaPorRuta(id=nuevaMetrica.id, distancia=nuevaMetrica.distancia, combustible=nuevaMetrica.combustible)
         db.add(metrica)
         db.commit()
         db.refresh(metrica)

@@ -1,4 +1,5 @@
-from sqlalchemy.orm import Session, func
+from sqlalchemy import func
+from sqlalchemy.orm import Session
 from models.models import Ruta
 from schemas.schemas import NuevaRuta
 
@@ -49,10 +50,10 @@ def eliminar(db: Session, id: int):
     return None
 
 def iniciar(db:Session, id:int):
-    ruta = obtener(db, int)
+    ruta = obtener(db, id)
     if ruta:
         try:
-            ruta.estatus = 2
+            ruta.estatusId = 2
             ruta.horaInicio = func.now()
             db.commit()
             db.refresh(ruta)
@@ -63,10 +64,10 @@ def iniciar(db:Session, id:int):
     return None
 
 def completar(db:Session, id:int):
-    ruta = obtener(db, int)
+    ruta = obtener(db, id)
     if ruta:
         try:
-            ruta.estatus = 3
+            ruta.estatusId = 3
             ruta.horaFin = func.now()
             db.commit()
             db.refresh(ruta)

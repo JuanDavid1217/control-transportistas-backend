@@ -50,7 +50,7 @@ class Ruta(Base):
 
     unidad = relationship("Unidad", back_populates="rutas", uselist=False)
     estatus = relationship("Estatus", back_populates="rutas", uselist=False)
-    metrica = relationship("MetricaPorRuta", back_populates="ruta", uselist=False)
+    metrica = relationship("MetricaPorRuta", back_populates="ruta", cascade="all, delete", uselist=False)
 
 class MetricaPorRuta(Base):
     __tablename__ = "MetricasPorRuta"
