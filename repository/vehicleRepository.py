@@ -4,7 +4,7 @@ from schemas.schemas import NuevaUnidad
 
 def crear(db: Session, nuevaUnidad: NuevaUnidad):
     try:
-        unidad = Unidad(placa=nuevaUnidad.placa, marca=nuevaUnidad.marca, modelo=nuevaUnidad.modelo, anio=nuevaUnidad.anio, usuarioId=nuevaUnidad.UsuarioId)
+        unidad = Unidad(placa=nuevaUnidad.placa, marca=nuevaUnidad.marca, modelo=nuevaUnidad.modelo, anio=nuevaUnidad.anio, usuarioId=nuevaUnidad.usuarioId)
         db.add(unidad)
         db.commit()
         db.refresh(unidad)
@@ -20,6 +20,10 @@ def obtener(db: Session, id: int):
 def obtenerTodos(db: Session):
     unidades = db.query(Unidad).all()
     return unidades
+
+def obtenerPorPlaca(db: Session, placa: str):
+    unidad = db.query(Unidad).filter(Unidad.placa == placa).first()
+    return unidad
 
 def actualizar(db: Session, id:int, nuevaUnidad: NuevaUnidad):
     unidad = obtener(db, id)
