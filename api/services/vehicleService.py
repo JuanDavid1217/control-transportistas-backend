@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from schemas.schemas import NuevaUnidad
 from repository import vehicleRepository
 from services import userService
-from services.validatorService import estaVacio, formatoPlaca, anioValido
+from utils.validatorUtils import estaVacio, formatoPlaca, anioValido
 from handlerException.handlerExceptionManager import handleValidationError
 
 def crear(db: Session, nuevaUnidad: NuevaUnidad):

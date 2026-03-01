@@ -5,7 +5,7 @@ from schemas.schemas import NuevaRuta
 
 def crear(db: Session, nuevaRuta: NuevaRuta):
     try:
-        ruta = Ruta(unidadId=nuevaRuta.unidadId, inicio=nuevaRuta.inicio, destino=nuevaRuta.destino)
+        ruta = Ruta(unidadId=nuevaRuta.unidadId, inicio=nuevaRuta.inicio.strip(), destino=nuevaRuta.destino.strip())
         db.add(ruta)
         db.commit()
         db.refresh(ruta)
@@ -27,8 +27,8 @@ def actualizar(db: Session, id:int, nuevaRuta: NuevaRuta):
     if ruta:
         try:
             ruta.unidadId = nuevaRuta.unidadId
-            ruta.inicio = nuevaRuta.inicio
-            ruta.destino = nuevaRuta.destino
+            ruta.inicio = nuevaRuta.inicio.strip()
+            ruta.destino = nuevaRuta.destino.strip()
             db.commit()
             db.refresh(ruta)
             return ruta

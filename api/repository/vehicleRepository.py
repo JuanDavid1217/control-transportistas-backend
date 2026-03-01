@@ -4,7 +4,7 @@ from schemas.schemas import NuevaUnidad
 
 def crear(db: Session, nuevaUnidad: NuevaUnidad):
     try:
-        unidad = Unidad(placa=nuevaUnidad.placa, marca=nuevaUnidad.marca, modelo=nuevaUnidad.modelo, anio=nuevaUnidad.anio, usuarioId=nuevaUnidad.usuarioId)
+        unidad = Unidad(placa=nuevaUnidad.placa.strip(), marca=nuevaUnidad.marca.strip(), modelo=nuevaUnidad.modelo.strip(), anio=nuevaUnidad.anio, usuarioId=nuevaUnidad.usuarioId)
         db.add(unidad)
         db.commit()
         db.refresh(unidad)
@@ -29,9 +29,9 @@ def actualizar(db: Session, id:int, nuevaUnidad: NuevaUnidad):
     unidad = obtener(db, id)
     if unidad:
         try:
-            unidad.placa = nuevaUnidad.placa
-            unidad.marca = nuevaUnidad.marca
-            unidad.modelo = nuevaUnidad.modelo
+            unidad.placa = nuevaUnidad.placa.strip()
+            unidad.marca = nuevaUnidad.marca.strip()
+            unidad.modelo = nuevaUnidad.modelo.strip()
             unidad.anio = nuevaUnidad.anio
             unidad.usuarioId = nuevaUnidad.usuarioId
             db.commit()

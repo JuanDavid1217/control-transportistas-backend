@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from schemas.schemas import NuevoUsuario
 from repository import userRepository
-from services.validatorService import estaVacio, esNumeroTelefonico
+from utils.validatorUtils import estaVacio, esNumeroTelefonico
 from handlerException.handlerExceptionManager import handleValidationError
 
 def crear(db: Session, nuevoUsuario: NuevoUsuario):

@@ -39,8 +39,10 @@ api/
 │   ├── routeService.py             # Logica de negocio para la gestion de las rutas
 │   ├── statusService.py            # Logica de negocio para la gestion de los estatus
 │   ├── userService.py              # Logica de negocio para la gestion de los usuarios
-│   ├── validatorService.py         # Contiene las validaciones básicas necesarias
 │   └── vehicleService.py           # Logica de negocio para la gestion de las unidades (vehiculos)
+├── utils/
+│   ├── durationFormatter.py        # Contiene la logica para transformar un Interval a String
+│   └── validatorUtils.py           # Contiene las validaciones básicas necesarias
 ```
 
 ## Instalación

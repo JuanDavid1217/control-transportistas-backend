@@ -4,7 +4,7 @@ from schemas.schemas import NuevoUsuario
 
 def crear(db: Session, nuevoUsuario: NuevoUsuario):
     try:
-        usuario = Usuario(nombre=nuevoUsuario.nombre, email=nuevoUsuario.email, telefono=nuevoUsuario.telefono)
+        usuario = Usuario(nombre=nuevoUsuario.nombre.strip(), email=nuevoUsuario.email.strip(), telefono=nuevoUsuario.telefono.strip())
         db.add(usuario)
         db.commit()
         db.refresh(usuario)
@@ -29,9 +29,9 @@ def actualizar(db: Session, id:int, nuevoUsuario: NuevoUsuario):
     usuario = obtener(db, id)
     if usuario:
         try:
-            usuario.nombre = nuevoUsuario.nombre
-            usuario.email = nuevoUsuario.email
-            usuario.telefono = nuevoUsuario.telefono
+            usuario.nombre = nuevoUsuario.nombre.strip()
+            usuario.email = nuevoUsuario.email.strip()
+            usuario.telefono = nuevoUsuario.telefono.strip()
             db.commit()
             db.refresh(usuario)
             return usuario

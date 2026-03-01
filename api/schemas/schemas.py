@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr
-from datetime import datetime, timedelta
+from datetime import datetime
 from decimal import Decimal
+from utils.durationFormatter import timedeltaAString
 
 class NuevoUsuario(BaseModel):
     nombre: str
@@ -49,10 +50,20 @@ class NuevaMetrica(MetricaBase):
     id: int
 
 class Metrica(NuevaMetrica):
-    duracion: timedelta
-    
+    duracion: str
+
     class Config:
         from_attributes = True
+    
+    @classmethod
+    def from_orm(cls, obj):
+        if obj:
+            return cls(
+                id=obj.id,
+                distancia=obj.distancia,
+                combustible=obj.combustible,
+                duracion = timedeltaAString(obj.duracion)
+            )
 
 class NuevaRuta(BaseModel):
     unidadId: int
@@ -69,3 +80,18 @@ class Ruta(NuevaRuta):
 
     class Config:
         from_attributes = True
+    
+    @classmethod
+    def from_orm(cls, obj):
+        if obj:
+            return cls(
+                id= obj.id,
+                estatus= obj.estatus,
+                horaInicio= obj.horaInicio,
+                horaFin= obj.horaFin,
+                unidad= obj.unidad,
+                metrica= Metrica.from_orm(obj.metrica),
+                unidadId = obj.unidadId,
+                inicio = obj.inicio,
+                destino = obj.destino
+            )
