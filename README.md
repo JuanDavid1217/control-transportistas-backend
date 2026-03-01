@@ -118,3 +118,4 @@ FastAPI maneja la documentación automatica mediante Swagger, para consultarla l
 - El rendimiento (metricas) solo se puede registrar cuando una ruta este "Completada", validando:
     - Que la ruta exista
     - Estatus de la ruta
+- La duracion de la ruta se calcula en automatico a mediante un procedimiento almacenado al guardar una metrica (solo puedes ingresar la distancia y combustible).

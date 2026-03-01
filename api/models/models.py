@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, BigInteger, String, SmallInteger, Numeric, Text, DateTime, func, text
+from sqlalchemy import Column, ForeignKey, BigInteger, String, SmallInteger, Numeric, Text, DateTime, func, text, Interval
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -58,5 +58,6 @@ class MetricaPorRuta(Base):
     id = Column(BigInteger, ForeignKey("Rutas.id", ondelete="CASCADE"), primary_key=True, nullable=False)
     distancia = Column(Numeric(10, 2), nullable=False)
     combustible = Column(Numeric(10, 2), nullable=False)
+    duracion = Column(Interval, nullable=False)
 
     ruta = relationship("Ruta", back_populates="metrica")

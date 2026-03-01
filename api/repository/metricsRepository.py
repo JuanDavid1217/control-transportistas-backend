@@ -1,14 +1,18 @@
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 from models.models import MetricaPorRuta
-from schemas.schemas import NuevaMetrica, Metrica
+from schemas.schemas import MetricaBase, NuevaMetrica
 
-def crear(db: Session, nuevaMetrica: Metrica):
+def crear(db: Session, nuevaMetrica: NuevaMetrica):
     try:
-        metrica = MetricaPorRuta(id=nuevaMetrica.id, distancia=nuevaMetrica.distancia, combustible=nuevaMetrica.combustible)
-        db.add(metrica)
+        metrica = db.execute(text('SELECT * FROM "guardarMetrica"(:id, :distancia, :combustible)'),
+                            {
+                                "id": nuevaMetrica.id,
+                                "distancia": nuevaMetrica.distancia,
+                                "combustible": nuevaMetrica.combustible
+                            })
         db.commit()
-        db.refresh(metrica)
-        return metrica
+        return metrica.fetchone()
     except Exception as e:
         db.rollback()
         raise e
@@ -21,7 +25,7 @@ def obtenerTodos(db: Session):
     metricas = db.query(MetricaPorRuta).all()
     return metricas
 
-def actualizar(db: Session, id:int, nuevaMetrica: NuevaMetrica):
+def actualizar(db: Session, id:int, nuevaMetrica: MetricaBase):
     metrica = obtener(db, id)
     if metrica:
         try:

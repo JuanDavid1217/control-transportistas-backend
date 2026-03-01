@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal
 
 class NuevoUsuario(BaseModel):
@@ -41,13 +41,16 @@ class Estatus(NuevoEstatus):
     class Config:
         from_attributes = True
 
-class NuevaMetrica(BaseModel):
+class MetricaBase(BaseModel):
     distancia: Decimal
     combustible: Decimal
 
-class Metrica(NuevaMetrica):
+class NuevaMetrica(MetricaBase):
     id: int
 
+class Metrica(NuevaMetrica):
+    duracion: timedelta
+    
     class Config:
         from_attributes = True
 

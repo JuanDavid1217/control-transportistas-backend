@@ -1,10 +1,10 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from schemas.schemas import NuevaMetrica, Metrica
+from schemas.schemas import MetricaBase, NuevaMetrica
 from repository import metricsRepository
 from services import routeService
 
-def crear(db: Session, nuevaMetrica: Metrica):
+def crear(db: Session, nuevaMetrica: NuevaMetrica):
     ruta = routeService.obtener(db, nuevaMetrica.id)
     existe = metricsRepository.obtener(db, nuevaMetrica.id)
     if existe is None:
@@ -22,7 +22,7 @@ def obtener(db: Session, id:int):
 def obtenerTodos(db: Session):
     return metricsRepository.obtenerTodos(db)
 
-def actualizar(db: Session, id:int, nuevaMetrica: NuevaMetrica):
+def actualizar(db: Session, id:int, nuevaMetrica: MetricaBase):
     metrica = obtener(db, id)
     metrica = metricsRepository.actualizar(db, id, nuevaMetrica)
     return metrica

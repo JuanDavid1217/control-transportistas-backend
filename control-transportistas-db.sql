@@ -1,3 +1,4 @@
+DROP FUNCTION IF EXISTS "guardarMetrica";
 DROP TABLE IF EXISTS "MetricasPorRuta";
 DROP TABLE IF EXISTS "Rutas";
 DROP TABLE IF EXISTS "Estatus";
@@ -63,6 +64,34 @@ CREATE TABLE "MetricasPorRuta" (
 	"id" BIGINT PRIMARY KEY NOT NULL,
 	"distancia" NUMERIC(10,2) NOT NULL,
 	"combustible" NUMERIC(10,2) NOT NULL,
+	"duracion" INTERVAL NOT NULL,
 	CONSTRAINT "fk_metrica_ruta"
 		FOREIGN KEY ("id") REFERENCES "Rutas"("id") ON DELETE CASCADE
 );
+
+
+CREATE OR REPLACE FUNCTION "guardarMetrica"(
+	"rutaId" BIGINT,
+	"distanciaInput" NUMERIC(10, 2),
+	"combustibleInput" NUMERIC(10, 2)
+)
+RETURNS "MetricasPorRuta" AS $$
+DECLARE
+	"nuevaMetrica" "MetricasPorRuta";
+BEGIN
+	INSERT INTO "MetricasPorRuta"
+	VALUES (
+		"rutaId",
+		"distanciaInput",
+		"combustibleInput",
+		(
+			SELECT "horaFin" - "horaInicio"
+			FROM "Rutas"
+			WHERE "Rutas"."id" = "rutaId"
+		)
+	)
+	RETURNING * INTO "nuevaMetrica";
+	
+	RETURN "nuevaMetrica";
+END;
+$$ LANGUAGE plpgsql;
