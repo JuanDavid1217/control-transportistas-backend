@@ -1,6 +1,5 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from schemas.schemas import Estatus
 from repository import statusRepository
 
 def obtener(db: Session, id:int):

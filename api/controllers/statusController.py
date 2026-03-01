@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from dbconnection import get_db
 from services import statusService
 from schemas.schemas import Estatus
-from controllers.globalExceptionHandler import global_exception_handler
+from handlerException.handlerExceptionManager import handleGlobalException
 
 router = APIRouter(prefix="/estatus", tags=["Estatus"])
 
@@ -16,5 +16,5 @@ async def obtener(id:int, db: Session=Depends(get_db)):
     try:
         return statusService.obtener(db, id)
     except Exception as e:
-        global_exception_handler(e)
+        handleGlobalException(e)
 

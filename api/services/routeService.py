@@ -3,8 +3,12 @@ from sqlalchemy.orm import Session
 from schemas.schemas import NuevaRuta
 from repository import routeRepository
 from services import vehicleService
+from services.validatorService import estaVacio
+from handlerException.handlerExceptionManager import handleValidationError
 
 def crear(db: Session, nuevaRuta: NuevaRuta):
+    handleValidationError(estaVacio(nuevaRuta.inicio, "inicio"))
+    handleValidationError(estaVacio(nuevaRuta.destino, "destino"))
     vehicleService.obtener(db, nuevaRuta.unidadId)
     ruta = routeRepository.crear(db, nuevaRuta)
     return ruta
@@ -19,6 +23,8 @@ def obtenerTodos(db: Session):
     return routeRepository.obtenerTodos(db)
 
 def actualizar(db: Session, id:int, nuevaRuta: NuevaRuta):
+    handleValidationError(estaVacio(nuevaRuta.inicio, "inicio"))
+    handleValidationError(estaVacio(nuevaRuta.destino, "destino"))
     ruta = obtener(db, id)
     vehicleService.obtener(db, nuevaRuta.unidadId)
     validarRutaNoIniciada(ruta)

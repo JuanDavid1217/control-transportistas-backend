@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from dbconnection import get_db
 from services import metricsService
 from schemas.schemas import MetricaBase, NuevaMetrica, Metrica
-from controllers.globalExceptionHandler import global_exception_handler
+from handlerException.handlerExceptionManager import handleGlobalException
 
 router = APIRouter(prefix="/metricas", tags=["Metricas"])
 
@@ -16,7 +16,7 @@ async def obtener(id:int, db: Session=Depends(get_db)):
     try:
         return metricsService.obtener(db, id)
     except Exception as e:
-        global_exception_handler(e)
+        handleGlobalException(e)
 
 @router.post("/", response_model=Metrica)
 async def crear(nuevaMetrica: NuevaMetrica, db: Session = Depends(get_db)):
@@ -24,7 +24,7 @@ async def crear(nuevaMetrica: NuevaMetrica, db: Session = Depends(get_db)):
         metrica = metricsService.crear(db, nuevaMetrica)
         return metrica
     except Exception as e:
-        global_exception_handler(e)
+        handleGlobalException(e)
 
 @router.put("/{id}", response_model=Metrica)
 async def actualizar(id:int, nuevaMetrica: MetricaBase, db: Session = Depends(get_db)):
@@ -32,11 +32,11 @@ async def actualizar(id:int, nuevaMetrica: MetricaBase, db: Session = Depends(ge
         ruta = metricsService.actualizar(db, id, nuevaMetrica)
         return ruta
     except Exception as e:
-        global_exception_handler(e)
+        handleGlobalException(e)
 
 @router.delete("/{id}")
 async def eliminar(id:int, db: Session = Depends(get_db)):
     try:
         metricsService.eliminar(db, id)
     except Exception as e:
-        global_exception_handler(e)
+        handleGlobalException(e)

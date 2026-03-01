@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from dbconnection import get_db
 from services import userService
 from schemas.schemas import NuevoUsuario, Usuario
-from controllers.globalExceptionHandler import global_exception_handler
+from handlerException.handlerExceptionManager import handleGlobalException
 
 router = APIRouter(prefix="/usuarios", tags=["Usuarios"])
 
@@ -16,7 +16,7 @@ async def obtener(id:int, db: Session=Depends(get_db)):
     try:
         return userService.obtener(db, id)
     except Exception as e:
-        global_exception_handler(e)
+        handleGlobalException(e)
 
 @router.post("/", response_model=Usuario)
 async def crear(nuevoUsuario: NuevoUsuario, db: Session = Depends(get_db)):
@@ -24,7 +24,7 @@ async def crear(nuevoUsuario: NuevoUsuario, db: Session = Depends(get_db)):
         usuario = userService.crear(db, nuevoUsuario)
         return usuario
     except Exception as e:
-        global_exception_handler(e)
+        handleGlobalException(e)
 
 @router.put("/{id}", response_model=Usuario)
 async def actualizar(id:int, nuevoUsuario: NuevoUsuario, db: Session = Depends(get_db)):
@@ -32,11 +32,11 @@ async def actualizar(id:int, nuevoUsuario: NuevoUsuario, db: Session = Depends(g
         usuario = userService.actualizar(db, id, nuevoUsuario)
         return usuario
     except Exception as e:
-        global_exception_handler(e)
+        handleGlobalException(e)
 
 @router.delete("/{id}")
 async def eliminar(id:int, db: Session = Depends(get_db)):
     try:
         userService.eliminar(db, id)
     except Exception as e:
-        global_exception_handler(e)
+        handleGlobalException(e)

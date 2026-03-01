@@ -3,8 +3,14 @@ from sqlalchemy.orm import Session
 from schemas.schemas import NuevaUnidad
 from repository import vehicleRepository
 from services import userService
+from services.validatorService import estaVacio, formatoPlaca, anioValido
+from handlerException.handlerExceptionManager import handleValidationError
 
 def crear(db: Session, nuevaUnidad: NuevaUnidad):
+    handleValidationError(estaVacio(nuevaUnidad.marca, "marca"))
+    handleValidationError(estaVacio(nuevaUnidad.modelo, "modelo"))
+    handleValidationError(formatoPlaca(nuevaUnidad.placa))
+    handleValidationError(anioValido(nuevaUnidad.anio))
     existe = vehicleRepository.obtenerPorPlaca(db, nuevaUnidad.placa)
     if existe is None:
         userService.obtener(db, nuevaUnidad.usuarioId)
@@ -22,6 +28,10 @@ def obtenerTodos(db: Session):
     return vehicleRepository.obtenerTodos(db)
 
 def actualizar(db: Session, id:int, nuevaUnidad: NuevaUnidad):
+    handleValidationError(estaVacio(nuevaUnidad.marca, "marca"))
+    handleValidationError(estaVacio(nuevaUnidad.modelo, "modelo"))
+    handleValidationError(formatoPlaca(nuevaUnidad.placa))
+    handleValidationError(anioValido(nuevaUnidad.anio))
     unidad = obtener(db, id)
     existe = vehicleRepository.obtenerPorPlaca(db, nuevaUnidad.placa)
     if existe is None or existe.id == unidad.id:

@@ -17,12 +17,13 @@ api/
 ├── dbconnection.py                 # Se establece la conexión con la base de datos
 ├── APIRouter.py                    # Permite una facil gestion de los controladores
 ├── controllers/
-│   ├── globalExceptionHandler.py   # Manejador de Errores a nivel global
 │   ├── metricsController.py        # Controlador para el modulo de rendimiento (metricas)
 │   ├── routeController.py          # Controlador para el modulo de rutas
 │   ├── statusController.py         # Controlador para el modulo de estatus
 │   ├── userController.py           # Controlador para el modulo de usuarios
 │   └── vehicleController.py        # Controlador para el modulo de unidades
+├── handlerException/
+│   └── handlerExceptionManager.py  # Manejador de Excepciones
 ├── models/
 │   └── models.py                   # Realiza un mapeo directo contra la base de datos
 ├── repository/
@@ -38,6 +39,7 @@ api/
 │   ├── routeService.py             # Logica de negocio para la gestion de las rutas
 │   ├── statusService.py            # Logica de negocio para la gestion de los estatus
 │   ├── userService.py              # Logica de negocio para la gestion de los usuarios
+│   ├── validatorService.py         # Contiene las validaciones básicas necesarias
 │   └── vehicleService.py           # Logica de negocio para la gestion de las unidades (vehiculos)
 ```
 
@@ -119,3 +121,4 @@ FastAPI maneja la documentación automatica mediante Swagger, para consultarla l
     - Que la ruta exista
     - Estatus de la ruta
 - La duracion de la ruta se calcula en automatico a mediante un procedimiento almacenado al guardar una metrica (solo puedes ingresar la distancia y combustible).
+- Las validaciones incluyen campos vacios, rangos numericos, formatos de texto con expresiones regulares.

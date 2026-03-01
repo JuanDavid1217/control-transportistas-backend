@@ -3,8 +3,12 @@ from sqlalchemy.orm import Session
 from schemas.schemas import MetricaBase, NuevaMetrica
 from repository import metricsRepository
 from services import routeService
+from services.validatorService import esNumeroValido
+from handlerException.handlerExceptionManager import handleValidationError
 
 def crear(db: Session, nuevaMetrica: NuevaMetrica):
+    handleValidationError(esNumeroValido(nuevaMetrica.distancia, "distancia"))
+    handleValidationError(esNumeroValido(nuevaMetrica.combustible, "combustible"))
     ruta = routeService.obtener(db, nuevaMetrica.id)
     existe = metricsRepository.obtener(db, nuevaMetrica.id)
     if existe is None:
@@ -23,6 +27,8 @@ def obtenerTodos(db: Session):
     return metricsRepository.obtenerTodos(db)
 
 def actualizar(db: Session, id:int, nuevaMetrica: MetricaBase):
+    handleValidationError(esNumeroValido(nuevaMetrica.distancia, "distancia"))
+    handleValidationError(esNumeroValido(nuevaMetrica.combustible, "combustible"))
     metrica = obtener(db, id)
     metrica = metricsRepository.actualizar(db, id, nuevaMetrica)
     return metrica
